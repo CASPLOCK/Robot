@@ -40,7 +40,7 @@ public class Climber extends Subsystem {
 		return climberMotor.getOutputCurrent();
 	}
 	public void turnOn(){
-		climberMotor.set(-1);
+		climberMotor.set(-.75);
 	}
 	public void turnOff(){
 		climberMotor.set(0);

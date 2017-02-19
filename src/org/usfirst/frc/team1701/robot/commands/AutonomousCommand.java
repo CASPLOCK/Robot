@@ -11,7 +11,9 @@
 package org.usfirst.frc.team1701.robot.commands;
 
 import org.usfirst.frc.team1701.robot.Robot;
+import org.usfirst.frc.team1701.robot.RobotMap;
 
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -70,7 +72,7 @@ public class AutonomousCommand extends Command {
 					&& Robot.driveTrain.getRightEncoder().getDistance() < DRIVE_FORWARD_DISTANCE) {
 				driveForward();
 			} else {
-				//Robot.driveTrain.resetGyro();
+				RobotMap.navx.reset();
 				currentState++;
 			}
 			break;
@@ -80,13 +82,13 @@ public class AutonomousCommand extends Command {
 				Robot.driveTrain.rightDriveControl(0);
 				currentState++;
 			} else {
-				/*if (Robot.driveTrain.getGryoReading() > 30 || Robot.driveTrain.getGryoReading() < -30) {
-					if (turnLeft)
-						turnLeft = false;
-					else
-						turnLeft = true;
-				}
-				*/
+//				if (RobotMap.navx.getYaw() > 30 || RobotMap.navx.getYaw() < -30) {
+//					if (turnLeft)
+//						turnLeft = false;
+//					else
+//						turnLeft = true;
+//				}
+		
 				if (turnLeft) {
 					Robot.driveTrain.leftDriveControl(.3);
 					Robot.driveTrain.rightDriveControl(-.3);

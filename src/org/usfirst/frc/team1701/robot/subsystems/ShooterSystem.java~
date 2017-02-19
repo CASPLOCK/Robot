@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -35,17 +36,20 @@ public class ShooterSystem extends Subsystem {
 
 	private final SpeedController mainShoot = RobotMap.shoot1;
 	private final SpeedController hopperMotor = RobotMap.hopperMotor;
-	private final double PULSES = 80.0;
+	private final double PULSES = 360.0;
 	private final int TARGET_SPEED = 5300;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	public void setup() {
-		shootingEncoder.setDistancePerPulse(1.0 / PULSES);
+		shootingEncoder.setDistancePerPulse(1.0);
 	}
 
 	public void fire() {
 		mainShoot.set(1);
+		double speed = shootingEncoder.getRate();
+		speed = (int)(speed * 100 + .05) / 100;
+		SmartDashboard.putNumber("Encoder Speed: ", speed);
 		if (shootingEncoder.getRate() < TARGET_SPEED) {
 			// will not load balls until shooter is at speed
 			System.out.println("Ramping up shooter...");
@@ -60,10 +64,6 @@ public class ShooterSystem extends Subsystem {
 		// periodically activate the solenoid to push a ball into the shooter
 	}
 
-
-	public double getSpeed() {
-		return mainShoot.get();
-	}
 	public void stop(){
 		mainShoot.set(0);
 		hopperMotor.set(0);

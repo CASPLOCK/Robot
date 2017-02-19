@@ -11,6 +11,7 @@
 package org.usfirst.frc.team1701.robot.commands;
 
 import org.usfirst.frc.team1701.robot.Robot;
+import org.usfirst.frc.team1701.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -102,7 +103,7 @@ public class RunAutoGear extends Command {
 					double degreesOff = .09375 * (gearTargetX - 320);
 					distanceToCorrect = distanceToWall * Math.tan(degreesOff); // in
 																				// inches
-					//Robot.driveTrain.resetGyro();
+					RobotMap.navx.reset();
 					degreesToTurn = 90;
 					currentState = 4;
 				} else {
@@ -159,7 +160,7 @@ public class RunAutoGear extends Command {
 			// currently does not reverse at all
 			break;
 		case 5: // TURN 1
-			/*if (degreesToTurn > Math.abs(Robot.driveTrain.getGryoReading())) {
+			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
 				if (distanceToCorrect > 0)
 					turnLeft = true;
 				else
@@ -177,13 +178,13 @@ public class RunAutoGear extends Command {
 				Robot.driveTrain.leftDriveControl(-DRIVE_SPEED);
 				Robot.driveTrain.rightDriveControl(-DRIVE_SPEED);
 			} else {
-				//Robot.driveTrain.resetGyro();
+				RobotMap.navx.reset();
 				degreesToTurn = 90;
 				currentState++;
 			}
 			break;
 		case 7: // TURN 2
-			/*if (degreesToTurn > Math.abs(Robot.driveTrain.getGryoReading())) {
+			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
 				if (distanceToCorrect > 0)
 					turnLeft = false;
 				else
