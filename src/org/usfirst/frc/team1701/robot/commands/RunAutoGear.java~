@@ -11,6 +11,7 @@
 package org.usfirst.frc.team1701.robot.commands;
 
 import org.usfirst.frc.team1701.robot.Robot;
+import org.usfirst.frc.team1701.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -56,6 +57,7 @@ public class RunAutoGear extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		NetworkTable.setTeam(1701);
 		visionTable = NetworkTable.getTable("vision");
 		finished = false;
 		currentState = 1;
@@ -102,7 +104,7 @@ public class RunAutoGear extends Command {
 					double degreesOff = .09375 * (gearTargetX - 320);
 					distanceToCorrect = distanceToWall * Math.tan(degreesOff); // in
 																				// inches
-					//Robot.driveTrain.resetGyro();
+					RobotMap.navx.reset();
 					degreesToTurn = 90;
 					currentState = 4;
 				} else {
@@ -150,7 +152,7 @@ public class RunAutoGear extends Command {
 			}
 			break;
 		case 3: // PLACING
-			Robot.gearArm.pushGear();
+//			Robot.gearAzrm.pushGear();
 			currentState = 0;
 			break;
 		case 4: // REVERSE 1
@@ -159,7 +161,7 @@ public class RunAutoGear extends Command {
 			// currently does not reverse at all
 			break;
 		case 5: // TURN 1
-			/*if (degreesToTurn > Math.abs(Robot.driveTrain.getGryoReading())) {
+			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
 				if (distanceToCorrect > 0)
 					turnLeft = true;
 				else
@@ -172,18 +174,18 @@ public class RunAutoGear extends Command {
 			}*/
 			break;
 		case 6: // REVERSE 2
-			if (Robot.driveTrain.getLeftEncoder().getDistance() < distanceToCorrect
-					|| Robot.driveTrain.getRightEncoder().getDistance() < distanceToCorrect) {
+			if (Robot.driveTrain.getLeftDistance() < distanceToCorrect
+					|| Robot.driveTrain.getRightDistance() < distanceToCorrect) {
 				Robot.driveTrain.leftDriveControl(-DRIVE_SPEED);
 				Robot.driveTrain.rightDriveControl(-DRIVE_SPEED);
 			} else {
-				//Robot.driveTrain.resetGyro();
+				RobotMap.navx.reset();
 				degreesToTurn = 90;
 				currentState++;
 			}
 			break;
 		case 7: // TURN 2
-			/*if (degreesToTurn > Math.abs(Robot.driveTrain.getGryoReading())) {
+			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
 				if (distanceToCorrect > 0)
 					turnLeft = false;
 				else

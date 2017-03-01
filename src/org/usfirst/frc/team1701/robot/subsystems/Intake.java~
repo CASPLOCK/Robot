@@ -33,6 +33,19 @@ public class Intake extends Subsystem {
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
+	public void resetEncoder() {
+		bottomMotor.setEncPosition(0);
+	}
+	
+	public int getEncVelocity() {
+		return bottomMotor.getEncVelocity();
+	}
+	
+	public int getEncPosition() {
+		return bottomMotor.getEncPosition();
+	}
+	
+	
 	public void forwards() {
 		bottomMotor.set(-1);
 

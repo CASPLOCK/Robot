@@ -57,6 +57,7 @@ public class RunAutoGear extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		NetworkTable.setTeam(1701);
 		visionTable = NetworkTable.getTable("vision");
 		finished = false;
 		currentState = 1;
@@ -151,7 +152,7 @@ public class RunAutoGear extends Command {
 			}
 			break;
 		case 3: // PLACING
-			Robot.gearArm.pushGear();
+//			Robot.gearAzrm.pushGear();
 			currentState = 0;
 			break;
 		case 4: // REVERSE 1
@@ -173,8 +174,8 @@ public class RunAutoGear extends Command {
 			}*/
 			break;
 		case 6: // REVERSE 2
-			if (Robot.driveTrain.getLeftEncoder().getDistance() < distanceToCorrect
-					|| Robot.driveTrain.getRightEncoder().getDistance() < distanceToCorrect) {
+			if (Robot.driveTrain.getLeftDistance() < distanceToCorrect
+					|| Robot.driveTrain.getRightDistance() < distanceToCorrect) {
 				Robot.driveTrain.leftDriveControl(-DRIVE_SPEED);
 				Robot.driveTrain.rightDriveControl(-DRIVE_SPEED);
 			} else {

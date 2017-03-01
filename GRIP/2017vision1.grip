@@ -5,137 +5,156 @@
     </grip:Camera>
   </sources>
   <steps>
-    <grip:Step name="Blur">
+    <grip:Step name="CV transpose">
       <grip:Input step="0" socket="0"/>
-      <grip:Input step="0" socket="1">
-        <value>GAUSSIAN</value>
-      </grip:Input>
-      <grip:Input step="0" socket="2">
-        <value>1.8018018018018018</value>
-      </grip:Input>
       <grip:Output step="0" socket="0" previewed="false"/>
     </grip:Step>
-    <grip:Step name="RGB Threshold">
+    <grip:Step name="CV flip">
       <grip:Input step="1" socket="0"/>
       <grip:Input step="1" socket="1">
+        <value>Y_AXIS</value>
+      </grip:Input>
+      <grip:Output step="1" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Blur">
+      <grip:Input step="2" socket="0"/>
+      <grip:Input step="2" socket="1">
+        <value>GAUSSIAN</value>
+      </grip:Input>
+      <grip:Input step="2" socket="2">
+        <value>1.8018018018018018</value>
+      </grip:Input>
+      <grip:Output step="2" socket="0" previewed="true"/>
+    </grip:Step>
+    <grip:Step name="RGB Threshold">
+      <grip:Input step="3" socket="0"/>
+      <grip:Input step="3" socket="1">
         <value>
           <double>121.08812949640286</double>
           <double>197.0454545454545</double>
         </value>
       </grip:Input>
-      <grip:Input step="1" socket="2">
+      <grip:Input step="3" socket="2">
         <value>
           <double>215.18884892086334</double>
           <double>255.0</double>
         </value>
       </grip:Input>
-      <grip:Input step="1" socket="3">
+      <grip:Input step="3" socket="3">
         <value>
           <double>198.48920863309354</double>
           <double>255.0</double>
         </value>
       </grip:Input>
-      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Output step="3" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="Find Contours">
-      <grip:Input step="2" socket="0"/>
-      <grip:Input step="2" socket="1">
-        <value>false</value>
-      </grip:Input>
-      <grip:Output step="2" socket="0" previewed="false"/>
-    </grip:Step>
-    <grip:Step name="Convex Hulls">
-      <grip:Input step="3" socket="0"/>
-      <grip:Output step="3" socket="0" previewed="false"/>
-    </grip:Step>
-    <grip:Step name="Filter Contours">
       <grip:Input step="4" socket="0"/>
       <grip:Input step="4" socket="1">
+        <value>false</value>
+      </grip:Input>
+      <grip:Output step="4" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Convex Hulls">
+      <grip:Input step="5" socket="0"/>
+      <grip:Output step="5" socket="0" previewed="false"/>
+    </grip:Step>
+    <grip:Step name="Filter Contours">
+      <grip:Input step="6" socket="0"/>
+      <grip:Input step="6" socket="1">
         <value>20.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="2">
+      <grip:Input step="6" socket="2">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="3">
+      <grip:Input step="6" socket="3">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="4">
+      <grip:Input step="6" socket="4">
         <value>150.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="5">
+      <grip:Input step="6" socket="5">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="6">
+      <grip:Input step="6" socket="6">
         <value>220.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="7">
+      <grip:Input step="6" socket="7">
         <value>
           <double>100.0</double>
           <double>100.0</double>
         </value>
       </grip:Input>
-      <grip:Input step="4" socket="8">
+      <grip:Input step="6" socket="8">
         <value>25.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="9">
+      <grip:Input step="6" socket="9">
         <value>4.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="10">
+      <grip:Input step="6" socket="10">
         <value>0.0</value>
       </grip:Input>
-      <grip:Input step="4" socket="11">
+      <grip:Input step="6" socket="11">
         <value>100.0</value>
       </grip:Input>
-      <grip:Output step="4" socket="0" previewed="true"/>
+      <grip:Output step="6" socket="0" previewed="true"/>
     </grip:Step>
     <grip:Step name="NTPublish ContoursReport">
-      <grip:Input step="5" socket="0"/>
-      <grip:Input step="5" socket="1">
+      <grip:Input step="7" socket="0"/>
+      <grip:Input step="7" socket="1">
         <value>contours1</value>
       </grip:Input>
-      <grip:Input step="5" socket="2">
+      <grip:Input step="7" socket="2">
         <value>true</value>
       </grip:Input>
-      <grip:Input step="5" socket="3">
+      <grip:Input step="7" socket="3">
         <value>true</value>
       </grip:Input>
-      <grip:Input step="5" socket="4">
+      <grip:Input step="7" socket="4">
         <value>true</value>
       </grip:Input>
-      <grip:Input step="5" socket="5">
+      <grip:Input step="7" socket="5">
         <value>true</value>
       </grip:Input>
-      <grip:Input step="5" socket="6">
+      <grip:Input step="7" socket="6">
         <value>true</value>
       </grip:Input>
-      <grip:Input step="5" socket="7">
+      <grip:Input step="7" socket="7">
         <value>true</value>
       </grip:Input>
     </grip:Step>
   </steps>
   <connections>
     <grip:Connection>
-      <grip:Output step="1" socket="0" previewed="true"/>
+      <grip:Output step="1" socket="0" previewed="false"/>
       <grip:Input step="2" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="0" socket="0" previewed="false"/>
-      <grip:Input step="1" socket="0"/>
+      <grip:Output step="3" socket="0" previewed="true"/>
+      <grip:Input step="4" socket="0"/>
     </grip:Connection>
     <grip:Connection>
       <grip:Output source="0" socket="0" previewed="true"/>
       <grip:Input step="0" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="3" socket="0" previewed="false"/>
-      <grip:Input step="4" socket="0"/>
+      <grip:Output step="5" socket="0" previewed="false"/>
+      <grip:Input step="6" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="2" socket="0" previewed="false"/>
+      <grip:Output step="0" socket="0" previewed="false"/>
+      <grip:Input step="1" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="6" socket="0" previewed="true"/>
+      <grip:Input step="7" socket="0"/>
+    </grip:Connection>
+    <grip:Connection>
+      <grip:Output step="2" socket="0" previewed="true"/>
       <grip:Input step="3" socket="0"/>
     </grip:Connection>
     <grip:Connection>
-      <grip:Output step="4" socket="0" previewed="true"/>
+      <grip:Output step="4" socket="0" previewed="false"/>
       <grip:Input step="5" socket="0"/>
     </grip:Connection>
   </connections>

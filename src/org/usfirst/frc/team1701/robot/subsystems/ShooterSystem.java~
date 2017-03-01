@@ -37,7 +37,7 @@ public class ShooterSystem extends Subsystem {
 	private final SpeedController mainShoot = RobotMap.shoot1;
 	private final SpeedController hopperMotor = RobotMap.hopperMotor;
 	private final double PULSES = 360.0;
-	private final int TARGET_SPEED = 5300;
+	private final int TARGET_SPEED = 5800;
 
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -48,20 +48,23 @@ public class ShooterSystem extends Subsystem {
 	public void fire() {
 		mainShoot.set(1);
 		double speed = shootingEncoder.getRate();
-		speed = (int)(speed * 100 + .05) / 100;
+		speed = (int)(speed * 400 + .05) / 100;
 		SmartDashboard.putNumber("Encoder Speed: ", speed);
-		if (shootingEncoder.getRate() < TARGET_SPEED) {
+		if (speed < TARGET_SPEED) {
 			// will not load balls until shooter is at speed
 			System.out.println("Ramping up shooter...");
 		}
 		else{
-			hopperMotor.set(.5);
-			cyclePneumatic();
+			hopperMotor.set(-1);
 		}
 	}
 
-	public void cyclePneumatic() {
-		// periodically activate the solenoid to push a ball into the shooter
+	public void hopperRun(double speed) {
+		hopperMotor.set(-1 * speed);//or set up Talon to run reversed
+	}
+	
+	public void hopperStop() {
+		hopperMotor.set(0.0);
 	}
 
 	public void stop(){

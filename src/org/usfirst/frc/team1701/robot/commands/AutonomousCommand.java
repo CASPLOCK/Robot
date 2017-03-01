@@ -18,13 +18,17 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class AutonomousCommand extends Command {
-	private final double DRIVE_FORWARD_DISTANCE = 216.0;
-	private final double AUTO_DRIVE_SPEED = 1.0;
+	private final double DRIVE_FORWARD_DISTANCE = 95.0; // enough to cross the
+														// baseline (needs
+														// testing
+	private final double AUTO_DRIVE_SPEED = .4;
+	private final double AUTO_TURN_SPEED = .3;
 	private boolean isFinished = false;
 	private int currentState;
 	private NetworkTable visionTable;
@@ -48,10 +52,12 @@ public class AutonomousCommand extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		Robot.driveTrain.getLeftEncoder().reset();
-		Robot.driveTrain.getRightEncoder().reset();
+		Robot.driveTrain.resetLeftEncoder();
+		Robot.driveTrain.resetRightEncoder();
 		currentState = 1;
+		NetworkTable.setTeam(1701);
 		visionTable = NetworkTable.getTable("vision");
+		RobotMap.navx.reset();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -62,64 +68,85 @@ public class AutonomousCommand extends Command {
 		} catch (Exception e) {
 			;
 		}
+		SmartDashboard.putNumber("Current State", currentState);
+		SmartDashboard.putNumber("Left Encoder Reading: ", Robot.driveTrain.getLeftDistance());
+		SmartDashboard.putNumber("Right Encoder Reading: ", Robot.driveTrain.getRightDistance());
+		SmartDashboard.putNumber("Navx Reading: ", RobotMap.navx.getYaw());
+
 
 		switch (currentState) {
 		case 0: // DONE
 			isFinished = true;
 			break;
 		case 1: // DRIVING_FORWARD
-			if (Robot.driveTrain.getLeftEncoder().getDistance() < DRIVE_FORWARD_DISTANCE
-					&& Robot.driveTrain.getRightEncoder().getDistance() < DRIVE_FORWARD_DISTANCE) {
+			if (Robot.driveTrain.getLeftDistance() < DRIVE_FORWARD_DISTANCE
+					&& Robot.driveTrain.getRightDistance() < DRIVE_FORWARD_DISTANCE) {
 				driveForward();
 			} else {
 				RobotMap.navx.reset();
 				currentState++;
 			}
 			break;
-		case 2: // SWEEPING
+		case 2: // TURNING AROUND
+			if (RobotMap.navx.getYaw() < 180 && RobotMap.navx.getYaw() > -180) {
+				Robot.driveTrain.leftDriveControl(AUTO_TURN_SPEED);
+				Robot.driveTrain.rightDriveControl(AUTO_TURN_SPEED);
+			} else {
+				RobotMap.navx.reset();
+				currentState++;
+			}
+			break;
+		case 3: // SWEEPING
 			if (gearTargetFound) {
 				Robot.driveTrain.leftDriveControl(0);
 				Robot.driveTrain.rightDriveControl(0);
 				currentState++;
 			} else {
-//				if (RobotMap.navx.getYaw() > 30 || RobotMap.navx.getYaw() < -30) {
-//					if (turnLeft)
-//						turnLeft = false;
-//					else
-//						turnLeft = true;
-//				}
-		
+				// if (RobotMap.navx.getYaw() > 30 || RobotMap.navx.getYaw() <
+				// -30) {
+				// if (turnLeft)
+				// turnLeft = false;
+				// else
+				// turnLeft = true;
+				// }
+
 				if (turnLeft) {
-					Robot.driveTrain.leftDriveControl(.3);
-					Robot.driveTrain.rightDriveControl(-.3);
+					Robot.driveTrain.leftDriveControl(AUTO_TURN_SPEED);
+					Robot.driveTrain.rightDriveControl(-AUTO_TURN_SPEED);
 				} else {
-					Robot.driveTrain.leftDriveControl(-.3);
-					Robot.driveTrain.rightDriveControl(.3);
+					Robot.driveTrain.leftDriveControl(-AUTO_TURN_SPEED);
+					Robot.driveTrain.rightDriveControl(AUTO_TURN_SPEED);
+				}
+				if (RobotMap.navx.getYaw() > 30 || RobotMap.navx.getYaw() < -30) {
+					if (turnLeft) {
+						turnLeft = false;
+					} else {
+						turnLeft = true;
+					}
 				}
 
 			}
 			break;
-		case 3: // AUTO_GEAR
-			Command autoGear = new RunAutoGear();
-			Scheduler.getInstance().add(autoGear);
-			currentState++;
+		case 4: // AUTO_GEAR
+			// Command autoGear = new RunAutoGear();
+			// Scheduler.getInstance().add(autoGear);
+			// currentState++;
 			break;
-		case 4:
+		case 5:
 			// Do nothing. RunAutoGear will handle the rest.
 			break;
 		}
 	}
 
 	private void driveForward() {
-		// if (Robot.driveTrain.getLeftEncoder().getDistance() >
-		// DRIVE_FORWARD_DISTANCE
-		// && Robot.driveTrain.getRightEncoder().getDistance() >
-		// DRIVE_FORWARD_DISTANCE) {
-		// isFinished = true;
-		// Robot.driveTrain.leftDriveControl(0);
-		// Robot.driveTrain.rightDriveControl(0);
-		// return;
-		// }
+		double percentError = RobotMap.navx.getYaw();
+		double leftSpeed = AUTO_DRIVE_SPEED + percentError;
+		double rightSpeed = AUTO_DRIVE_SPEED - percentError;
+		Robot.driveTrain.leftDriveControl(leftSpeed);
+		Robot.driveTrain.rightDriveControl(-rightSpeed);
+	}
+
+	private void driveBackwards() {
 		Robot.driveTrain.leftDriveControl(AUTO_DRIVE_SPEED);
 		Robot.driveTrain.rightDriveControl(AUTO_DRIVE_SPEED);
 	}
