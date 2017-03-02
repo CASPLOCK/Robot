@@ -11,8 +11,10 @@
 package org.usfirst.frc.team1701.robot.commands;
 
 import org.usfirst.frc.team1701.robot.Robot;
+import org.usfirst.frc.team1701.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -38,11 +40,16 @@ public class TeleopDrive extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		Robot.driveTrain.resetLeftEncoder();
+		Robot.driveTrain.resetRightEncoder();
 		// System.out.println("Teleop Drive Initialized.");
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+		SmartDashboard.putNumber("Left Encoder Reading: ", Robot.driveTrain.getLeftDistance());
+		SmartDashboard.putNumber("Right Encoder Reading: ", Robot.driveTrain.getRightDistance());
+		SmartDashboard.putNumber("Navx Reading: ", RobotMap.navx.getYaw());
 		// Drivetrain control using joysticks
 
 		double deadConst = .10; // can change the deadConst to make a larger or
@@ -50,12 +57,12 @@ public class TeleopDrive extends Command {
 		// double forwardsBackwardsInput =
 		// checkDeadZone(oi.drive_Forwards_Backwards.getRawAxis(1), deadConst);
 		double fBInput = checkDeadZone(Robot.oi.drive_FB.getY(), deadConst);
-		double tInput = .5*checkDeadZone(Robot.oi.drive_T.getX(), deadConst);
+		double tInput = .5 * checkDeadZone(Robot.oi.drive_T.getX(), deadConst);
 
-//		 System.out.println("Input: FB: " + fBInput + " : " +
-//		 Robot.oi.drive_FB.getY());
-//		 System.out.println("Input: T: " + tInput + " : " +
-//		 Robot.oi.drive_T.getX());
+		// System.out.println("Input: FB: " + fBInput + " : " +
+		// Robot.oi.drive_FB.getY());
+		// System.out.println("Input: T: " + tInput + " : " +
+		// Robot.oi.drive_T.getX());
 
 		Robot.driveTrain.teleopControl(fBInput, tInput);
 
