@@ -10,10 +10,11 @@
 
 package org.usfirst.frc.team1701.robot.commands;
 
+import org.usfirst.frc.team1701.robot.Robot;
+
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import org.usfirst.frc.team1701.robot.Robot;
 
 /**
  *
@@ -54,13 +55,13 @@ public class RunClimb extends Command {
 			isFinished = true;
 			System.out.println("Done climbing!");
 		}
-		if(Robot.climber.getCurrent() > maxCurrent){
+		if (Robot.climber.getCurrent() > maxCurrent) {
 			maxCurrent = Robot.climber.getCurrent();
 			SmartDashboard.putNumber("Climber current", maxCurrent);
 		}
-		
-		public void setDirection(Relay.Direction direction)
-		
+
+		// public void setDirection(Relay.Direction direction)
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

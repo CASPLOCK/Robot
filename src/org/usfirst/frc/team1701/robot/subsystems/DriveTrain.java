@@ -38,7 +38,16 @@ public class DriveTrain extends Subsystem {
 	private final SpeedController right_2 = RobotMap.driveTrainRight_2;
 	private boolean reversed = false;
 	private final double DIST_ADJUST_CONST = 1052.6;
+	private boolean precise = false;
 	// private final RobotDrive robotDrive41 = RobotMap.driveTrainRobotDrive41;
+
+	public boolean isPrecise() {
+		return precise;
+	}
+
+	public void setPrecise(boolean precise) {
+		this.precise = precise;
+	}
 
 	// whichever Talon has the encoder on each side
 	private final CANTalon leftEncTalon = (CANTalon) left_2;// this is Talon 3
@@ -112,42 +121,54 @@ public class DriveTrain extends Subsystem {
 	}
 
 	public void teleopControl(double forwardsBackwardsAxis, double turningAxis) {
-		double rightInput = forwardsBackwardsAxis;
-		double leftInput = -forwardsBackwardsAxis;
 		
+		//		double rightInput = forwardsBackwardsAxis;
+//		double leftInput = -forwardsBackwardsAxis;
+//		
+//		if (reversed) {
+//			leftInput *= -1;
+//			rightInput *= -1;
+//		}
+//		
+//		leftInput += turningAxis;
+//		rightInput += turningAxis;
+//
+//		// if (reversed) {
+//		//
+//		// leftInput *= -1;
+//		// rightInput *= -1;
+//		// }
+//
+//		if (leftInput > 1) {
+//			rightInput -= leftInput - 1;
+//			leftInput -= leftInput - 1;
+//		} else if (leftInput < -1) {
+//			rightInput += leftInput + 1;
+//			leftInput += leftInput + 1;
+//		}
+//		if (rightInput > 1) {
+//			leftInput -= rightInput - 1;
+//			rightInput -= rightInput - 1;
+//		} else if (rightInput < -1) {
+//			leftInput += rightInput + 1;
+//			rightInput += rightInput + 1;
+//		}
+
 		if (reversed) {
-			leftInput *= -1;
-			rightInput *= -1;
+			forwardsBackwardsAxis *= -1;
 		}
 		
-		leftInput += turningAxis;
-		rightInput += turningAxis;
-
-		// if (reversed) {
-		//
-		// leftInput *= -1;
-		// rightInput *= -1;
-		// }
-
-		if (leftInput > 1) {
-			rightInput -= leftInput - 1;
-			leftInput -= leftInput - 1;
-		} else if (leftInput < -1) {
-			rightInput += leftInput + 1;
-			leftInput += leftInput + 1;
-		}
-		if (rightInput > 1) {
-			leftInput -= rightInput - 1;
-			rightInput -= rightInput - 1;
-		} else if (rightInput < -1) {
-			leftInput += rightInput + 1;
-			rightInput += rightInput + 1;
+		if(precise){
+			forwardsBackwardsAxis *= .5;
+			turningAxis *= .75;
 		}
 
 		// System.out.println("LeftInput: " + leftInput);
 		// System.out.println("RightInput: " + rightInput);
-		leftDriveControl(leftInput);
-		rightDriveControl(rightInput);
+//		leftDriveControl(leftInput);
+//		rightDriveControl(rightInput);
+		
+		RobotMap.driveTrainRM.arcadeDrive(forwardsBackwardsAxis, turningAxis);
 	}
 
 	public void initDefaultCommand() {

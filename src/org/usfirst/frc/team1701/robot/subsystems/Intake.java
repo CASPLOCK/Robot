@@ -10,6 +10,7 @@
 
 package org.usfirst.frc.team1701.robot.subsystems;
 
+import org.usfirst.frc.team1701.robot.Robot;
 import org.usfirst.frc.team1701.robot.RobotMap;
 import org.usfirst.frc.team1701.robot.commands.StopIntake;
 
@@ -52,8 +53,9 @@ public class Intake extends Subsystem {
 	}
 
 	public void reverse() {
-
-		bottomMotor.set(1);
+		if (!Robot.shooterSystem.isShooterActive()){
+			bottomMotor.set(1);
+		}
 
 	}
 

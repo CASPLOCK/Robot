@@ -38,7 +38,16 @@ public class DriveTrain extends Subsystem {
 	private final SpeedController right_2 = RobotMap.driveTrainRight_2;
 	private boolean reversed = false;
 	private final double DIST_ADJUST_CONST = 1052.6;
+	private boolean precise = false;
 	// private final RobotDrive robotDrive41 = RobotMap.driveTrainRobotDrive41;
+
+	public boolean isPrecise() {
+		return precise;
+	}
+
+	public void setPrecise(boolean precise) {
+		this.precise = precise;
+	}
 
 	// whichever Talon has the encoder on each side
 	private final CANTalon leftEncTalon = (CANTalon) left_2;// this is Talon 3
@@ -142,6 +151,10 @@ public class DriveTrain extends Subsystem {
 		} else if (rightInput < -1) {
 			leftInput += rightInput + 1;
 			rightInput += rightInput + 1;
+		}
+		if(precise){
+			leftInput *= .5;
+			rightInput *= .5;
 		}
 
 		// System.out.println("LeftInput: " + leftInput);

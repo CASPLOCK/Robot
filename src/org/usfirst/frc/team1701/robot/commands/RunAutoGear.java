@@ -13,6 +13,7 @@ package org.usfirst.frc.team1701.robot.commands;
 import org.usfirst.frc.team1701.robot.Robot;
 import org.usfirst.frc.team1701.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 
@@ -75,6 +76,13 @@ public class RunAutoGear extends Command {
 			;
 		}
 		// Gets the latest, most correct information from the network table
+		if (gearTargetFound) {
+			if (RobotMap.lightsLED2.get() == Relay.Value.kReverse) {
+				RobotMap.lightsLED2.set(Relay.Value.kOn);
+			} else {
+				RobotMap.lightsLED2.set(Relay.Value.kForward);
+			}
+		}
 
 		switch (currentState) {
 		// different actions depending on the state the gear placement is in
@@ -152,7 +160,7 @@ public class RunAutoGear extends Command {
 			}
 			break;
 		case 3: // PLACING
-//			Robot.gearAzrm.pushGear();
+			// Robot.gearAzrm.pushGear();
 			currentState = 0;
 			break;
 		case 4: // REVERSE 1
@@ -161,17 +169,13 @@ public class RunAutoGear extends Command {
 			// currently does not reverse at all
 			break;
 		case 5: // TURN 1
-			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
-				if (distanceToCorrect > 0)
-					turnLeft = true;
-				else
-					turnLeft = false;
-				turn(TURN_SPEED);
-			} else {
-				Robot.driveTrain.getLeftEncoder().reset();
-				Robot.driveTrain.getRightEncoder().reset();
-				currentState++;
-			}*/
+			/*
+			 * if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) { if
+			 * (distanceToCorrect > 0) turnLeft = true; else turnLeft = false;
+			 * turn(TURN_SPEED); } else {
+			 * Robot.driveTrain.getLeftEncoder().reset();
+			 * Robot.driveTrain.getRightEncoder().reset(); currentState++; }
+			 */
 			break;
 		case 6: // REVERSE 2
 			if (Robot.driveTrain.getLeftDistance() < distanceToCorrect
@@ -185,15 +189,11 @@ public class RunAutoGear extends Command {
 			}
 			break;
 		case 7: // TURN 2
-			/*if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) {
-				if (distanceToCorrect > 0)
-					turnLeft = false;
-				else
-					turnLeft = true;
-				turn(TURN_SPEED);
-			} else {
-				currentState = 1;
-			}*/
+			/*
+			 * if (degreesToTurn > Math.abs(RobotMap.navx.getYaw())) { if
+			 * (distanceToCorrect > 0) turnLeft = false; else turnLeft = true;
+			 * turn(TURN_SPEED); } else { currentState = 1; }
+			 */
 			break;
 		}
 

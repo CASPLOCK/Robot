@@ -76,16 +76,16 @@ public class RobotMap {
         gearArmGearPusher = new DoubleSolenoid(0, 2, 3);
         LiveWindow.addActuator("GearArm", "GearPusher", gearArmGearPusher);
         
-        lightsLED1 = new Relay(0);
+        lightsLED1 = new Relay(1);
         LiveWindow.addActuator("Lights", "LED1", lightsLED1);
         
-        lightsLED2 = new Relay(1);
+        lightsLED2 = new Relay(2);
         LiveWindow.addActuator("Lights", "LED2", lightsLED2);
         
-        lightsLED3 = new Relay(2);
+        lightsLED3 = new Relay(3);
         LiveWindow.addActuator("Lights", "LED3", lightsLED3);
         
-        lightsTargeting = new Relay(3);
+        lightsTargeting = new Relay(0);
         LiveWindow.addActuator("Lights", "Targeting", lightsTargeting);
         
 

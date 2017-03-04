@@ -10,8 +10,10 @@
 
 
 package org.usfirst.frc.team1701.robot.commands;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team1701.robot.Robot;
+import org.usfirst.frc.team1701.robot.RobotMap;
 
 /**
  *
@@ -41,6 +43,7 @@ public class StopTargetLight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+		RobotMap.lightsLED1.set(Relay.Value.kOff);
     }
 
     // Make this return true when this Command no longer needs to run execute()

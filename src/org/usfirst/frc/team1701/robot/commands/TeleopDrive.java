@@ -13,6 +13,7 @@ package org.usfirst.frc.team1701.robot.commands;
 import org.usfirst.frc.team1701.robot.Robot;
 import org.usfirst.frc.team1701.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -47,6 +48,8 @@ public class TeleopDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+        Robot.lights.getTargetingLED().set(Relay.Value.kOn);
+        
 		SmartDashboard.putNumber("Left Encoder Reading: ", Robot.driveTrain.getLeftDistance());
 		SmartDashboard.putNumber("Right Encoder Reading: ", Robot.driveTrain.getRightDistance());
 		SmartDashboard.putNumber("Navx Reading: ", RobotMap.navx.getYaw());
@@ -57,7 +60,7 @@ public class TeleopDrive extends Command {
 		// double forwardsBackwardsInput =
 		// checkDeadZone(oi.drive_Forwards_Backwards.getRawAxis(1), deadConst);
 		double fBInput = checkDeadZone(Robot.oi.drive_FB.getY(), deadConst);
-		double tInput = .5 * checkDeadZone(Robot.oi.drive_T.getX(), deadConst);
+		double tInput = .75 * checkDeadZone(Robot.oi.drive_T.getX(), deadConst);
 
 		// System.out.println("Input: FB: " + fBInput + " : " +
 		// Robot.oi.drive_FB.getY());

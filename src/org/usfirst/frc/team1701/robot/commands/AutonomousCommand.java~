@@ -15,6 +15,7 @@ import org.usfirst.frc.team1701.robot.RobotMap;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -24,9 +25,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class AutonomousCommand extends Command {
-	private final double DRIVE_FORWARD_DISTANCE = 95.0; // enough to cross the
-														// baseline (needs
-														// testing
+	private final double DRIVE_FORWARD_DISTANCE = 105.0; // enough to cross the
+														// baseline (tested to be 95)
 	private final double AUTO_DRIVE_SPEED = .4;
 	private final double AUTO_TURN_SPEED = .3;
 	private boolean isFinished = false;
@@ -62,6 +62,8 @@ public class AutonomousCommand extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
+        Robot.lights.getTargetingLED().set(Relay.Value.kOn);
+
 		boolean gearTargetFound = false;
 		try {
 			gearTargetFound = visionTable.getBoolean("gearTargetFound", false);
@@ -88,7 +90,7 @@ public class AutonomousCommand extends Command {
 			}
 			break;
 		case 2: // TURNING AROUND
-			if (RobotMap.navx.getYaw() < 180 && RobotMap.navx.getYaw() > -180) {
+			if (RobotMap.navx.getYaw() < 170 && RobotMap.navx.getYaw() > -170) {
 				Robot.driveTrain.leftDriveControl(AUTO_TURN_SPEED);
 				Robot.driveTrain.rightDriveControl(AUTO_TURN_SPEED);
 			} else {
